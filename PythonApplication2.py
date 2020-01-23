@@ -24,13 +24,9 @@ location=[]
  并 删除或 填充
  思路一：
  如果key(deal)对应的value="",则删除字典
- line类型为字符串，可用eval()函数将其转化为字典
+ line类型为字符串  （1）用eval()函数将其转化为字典,有报错invalid character in identifier (<string>, line 1)
+ （2）用json中的loads()函数也不行   
 """
-
-for line in filelist:
-    line=line
-print(type(line))
-print(line)
 
 
 
@@ -38,30 +34,25 @@ for line in filelist: #依次读取每行
     #字符切割处理
     #(line)
     
-    line=re.sub(r"[\:\"\¥]+",'',line)
-
-    '''
-    顺序不能放在循环最后  要不然会出错 
-    '''
-
+    line=re.sub(r"[\:\¥]+",'',line)     # 顺序不能放在循环最后  要不然会出错 
+   
     line=line.strip().strip('{}')   #去掉每行头尾空白符  和 {}
     listline=line.split(',')    #按“，”切割
-
-    '''
-    如果按换行符分割数据 
-    就 也把title切碎了  ，，，，，
-    '''
-
     listline.pop(2)   #移除title与它所对应的元素
     listline=''.join(listline)
     listline=listline.split()
-   # print(listline)
-    '''
+    
+    for i in listline:
+        if i=='""':
+            del listline        #思路遍历列表 找到 是否存在’”“‘元素，如果存在删除整个列表
+        else:
+            pass
+    print(listline)
     price.append(str(listline[1]))
     deal.append(str(listline[3]))
     shop.append(str(listline[5]))
     location.append(str(listline[7]))
-    '''
+
 print(deal)
 f.close()
 
